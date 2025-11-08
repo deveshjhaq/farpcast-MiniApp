@@ -2,5 +2,10 @@
   "version": 1,
   "name": "NeonDream",
   "url": "https://farpcast-mini.vercel.app",
-  "iconUrl": "https://farpcast-mini.vercel.app/icon.png"
+  "iconUrl": "https://farpcast-mini.vercel.app/icon.png",
+  "accountAssociation": {
+    "header": "eyJmaWQiOjg1MTk4OCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDhlNzc1YTVlMjE2RjMwYjk3ZTcxNTU5OEFDMjNjMmRBYTZGYzAwM2IifQ",
+    "payload": "eyJkb21haW4iOiJmYXJwY2FzdC1taW5pLnZlcmNlbC5hcHAifQ",
+    "signature": "aGetlAj/7R+LhYRPfQ0uHzhGKQqUOdJsT5ni2HmOSCRccCAvEKPi/HaEuAw1xISqaC2fPByNf8e35zy9ib6NdRw="
+  }
 }
