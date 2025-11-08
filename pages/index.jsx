@@ -4,6 +4,8 @@ import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagm
 import { parseEther } from 'viem';
 import { NFT_CONTRACT_ABI, NFT_CONTRACT_ADDRESS, uploadToIPFS } from '../utils/nft';
 import { sdk } from "@farcaster/miniapp-sdk";
+import AddMiniAppButton from '../components/AddMiniAppButton';
+import { shareToWarpcast } from '../lib/share';
 
 const MODEL_MAP = {
   flux: 'Flux',
@@ -26,15 +28,6 @@ const RATIOS = {
 };
 
 export default function Home() {
-  useEffect(() => {
-    const boot = async () => {
-      try {
-        await sdk.actions.ready();
-      } catch(e) { console.error(e); }
-    };
-    boot();
-  }, []);
-
   const { address, isConnected } = useAccount();
   const { writeContract, data: hash, isPending: isMinting } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
@@ -92,12 +85,6 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }
-
-  async function shareToWarpcast(url, text = "I just created this on NeonDream!") {
-    const full = `${text}\n${url}`;
-    await navigator.clipboard.writeText(full);
-    alert("Copied! Open Warpcast and paste to cast.");
   }
 
   async function handleMint() {
@@ -290,7 +277,7 @@ export default function Home() {
           <div className="share-section">
             <button 
               className="btn btn-share" 
-              onClick={() => shareToWarpcast(imageDataUrl, "I just created this on NeonDream!")}
+              onClick={() => shareToWarpcast("I just created this on NeonDream!", imageDataUrl)}
             >
               Share to Warpcast
             </button>
@@ -301,6 +288,7 @@ export default function Home() {
             >
               {isMinting || isConfirming ? 'Minting...' : isConfirmed ? '✓ Minted!' : 'Mint on Base'}
             </button>
+            <AddMiniAppButton />
           </div>
         )}
         {isConfirmed && hash && (
