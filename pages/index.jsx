@@ -5,6 +5,7 @@ import { parseEther } from 'viem';
 import { NFT_CONTRACT_ABI, NFT_CONTRACT_ADDRESS, uploadToIPFS } from '../utils/nft';
 import { sdk } from "@farcaster/miniapp-sdk";
 import AddMiniAppButton from '../components/AddMiniAppButton';
+import DailyStats from '../components/DailyStats';
 import { shareToWarpcast } from '../lib/share';
 import { trackEvent, MetricEvents } from '../lib/metrics';
 
@@ -30,8 +31,16 @@ const RATIOS = {
 
 export default function Home() {
   useEffect(() => {
-    // Track app opened
-    trackEvent(MetricEvents.APP_OPENED);
+    // Track app opened and check for referral
+    const urlParams = new URLSearchParams(window.location.search);
+    const refFid = urlParams.get('ref');
+    
+    if (refFid) {
+      // Track referral
+      trackEvent(MetricEvents.APP_OPENED, { referredBy: refFid });
+    } else {
+      trackEvent(MetricEvents.APP_OPENED);
+    }
   }, []);
 
   const { address, isConnected } = useAccount();
@@ -86,6 +95,8 @@ export default function Home() {
         setImageDataUrl(data.dataUrl);
         setDetails(data.details || {});
         trackEvent(MetricEvents.IMAGE_GENERATED, { model: form.model });
+        // Increment daily stats
+        if (window.incrementDailyStats) window.incrementDailyStats();
       }
     } catch (err) {
       setError(err.message || 'Unexpected error');
@@ -148,16 +159,22 @@ export default function Home() {
   return (
     <div className="container">
       <header>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <div>
-            <h1 className="logo glow">NeonDream</h1>
-            <p className="tagline">Generate stunning AI visuals with cybernetic precision. Push the boundaries of digital creativity.</p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+          <div style={{ flex: '1 1 300px' }}>
+            <h1 className="logo glow" style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>
+              Make & share in 3 seconds ⚡
+            </h1>
+            <p className="tagline" style={{ fontSize: '1.1rem', marginBottom: '0' }}>
+              AI-powered visuals. One click. Hindi/English OK.
+            </p>
           </div>
           <div className="wallet-connect-wrapper">
             <ConnectButton />
           </div>
         </div>
       </header>
+
+      <DailyStats />
 
       <div className="main-card">
         <form id="imageForm" onSubmit={handleSubmit}>
@@ -270,7 +287,7 @@ export default function Home() {
             </div>
             <div className="form-col" style={{ display: 'flex', alignItems: 'flex-end' }}>
               <button className="btn btn-primary btn-block" type="submit" disabled={loading}>
-                {loading ? 'Generating…' : 'Generate'}
+                {loading ? 'Generating…' : '✨ Try now'}
               </button>
             </div>
           </div>
