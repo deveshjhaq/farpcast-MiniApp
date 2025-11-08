@@ -1,11 +1,18 @@
 {
-  "version": 1,
-  "name": "NeonDream",
-  "url": "https://farpcast-mini.vercel.app",
-  "iconUrl": "https://farpcast-mini.vercel.app/icon.png",
+  "frame": {
+    "name": "NeonDream",
+    "version": "1",
+    "iconUrl": "https://farpcast-mini.vercel.app",
+    "homeUrl": "https://farpcast-mini.vercel.app",
+    "primaryCategory": "utility",
+    "splashImageUrl": "https://farpcast-mini.vercel.app/",
+    "subtitle": "NeonDream — AI Image Generator & NFT MiniApp",
+    "description": "NeonDream is a modern, full-stack Farcaster MiniApp built with Next.js that harnesses the power of multiple AI image generation models. It features a sleek, cyberpunk-inspired UI with neon aesthetics, Web3 wallet integration, and provides an intuitive interface for creating stunning AI-generated artwork and minting them as NFTs on the Base network.",
+    "splashBackgroundColor": "#39ff14"
+  },
   "accountAssociation": {
     "header": "eyJmaWQiOjg1MTk4OCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDhlNzc1YTVlMjE2RjMwYjk3ZTcxNTU5OEFDMjNjMmRBYTZGYzAwM2IifQ",
-    "payload": "eyJkb21haW4iOiJmYXJwY2FzdC1taW5pLnZlcmNlbC5hcHAifQ",
-    "signature": "aGetlAj/7R+LhYRPfQ0uHzhGKQqUOdJsT5ni2HmOSCRccCAvEKPi/HaEuAw1xISqaC2fPByNf8e35zy9ib6NdRw="
+    "payload": "eyJkb21haW4iOiIifQ",
+    "signature": "iumx4ElMlJXURgYBYIW2MMrteGX1UWg1UvMJJd24P+0btGvF8QqpoA44jowksT8UqLLfEkVJ2FhpEvTrXyApFRw="
   }
 }
