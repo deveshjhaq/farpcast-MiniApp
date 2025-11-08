@@ -6,6 +6,7 @@ import { NFT_CONTRACT_ABI, NFT_CONTRACT_ADDRESS, uploadToIPFS } from '../utils/n
 import { sdk } from "@farcaster/miniapp-sdk";
 import AddMiniAppButton from '../components/AddMiniAppButton';
 import { shareToWarpcast } from '../lib/share';
+import { trackEvent, MetricEvents } from '../lib/metrics';
 
 const MODEL_MAP = {
   flux: 'Flux',
@@ -28,6 +29,11 @@ const RATIOS = {
 };
 
 export default function Home() {
+  useEffect(() => {
+    // Track app opened
+    trackEvent(MetricEvents.APP_OPENED);
+  }, []);
+
   const { address, isConnected } = useAccount();
   const { writeContract, data: hash, isPending: isMinting } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
@@ -79,12 +85,18 @@ export default function Home() {
       } else {
         setImageDataUrl(data.dataUrl);
         setDetails(data.details || {});
+        trackEvent(MetricEvents.IMAGE_GENERATED, { model: form.model });
       }
     } catch (err) {
       setError(err.message || 'Unexpected error');
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleShare() {
+    shareToWarpcast("I just created this on NeonDream!", imageDataUrl);
+    trackEvent(MetricEvents.SHARED);
   }
 
   async function handleMint() {
@@ -126,6 +138,7 @@ export default function Home() {
         args: [address, ipfsUri],
         value: parseEther('0.001'), // 0.001 ETH mint price (adjust as needed)
       });
+      trackEvent(MetricEvents.MINTED);
     } catch (err) {
       console.error('Minting error:', err);
       alert(`Failed to mint: ${err.message}`);
@@ -277,7 +290,7 @@ export default function Home() {
           <div className="share-section">
             <button 
               className="btn btn-share" 
-              onClick={() => shareToWarpcast("I just created this on NeonDream!", imageDataUrl)}
+              onClick={handleShare}
             >
               Share to Warpcast
             </button>
